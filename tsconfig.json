@@ -4,6 +4,7 @@
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
     "esModuleInterop": true,
+     "ignoreDeprecations": "6.0",
     "isolatedModules": true,
     "declaration": true,
     "removeComments": true,
