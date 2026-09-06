@@ -5,9 +5,29 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "./generated"
+  output   = "../src/prismaORM/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Users {
+  id        String   @default(uuid())
+  name      String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Events {
+  id               String        @default(uuid())
+  name             String        @unique
+  date             DateTime
+  place            String
+  availableSectors EventsSectors @default(ECONOMIC)
+}
+
+enum EventsSectors {
+  PREMIUM
+  ECONOMIC
 }

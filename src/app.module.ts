@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { UsersController } from './modules/Users/controller/users.Controller.js';
+import { UsersService } from './modules/Users/service/users.service.js';
+import { DatabaseModule } from './prismaORM/database.module.js';
 import { createObserveModule } from '@nestjs/observe';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { PrismaService } from './PrismaORM/prismaService.js';
+import { Module } from '@nestjs/common';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -15,8 +15,13 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: 'YOUR_APP_SECRET',
       serviceId: 'api-flash-ticket',
     }),
+    DatabaseModule,
+    
   ],
-  controllers: [AppController],
-  providers: [AppService, PrismaService],
+  controllers: [UsersController],
+  providers: [
+    UsersService
+  ]
 })
+
 export class AppModule {}
