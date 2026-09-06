@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/prismaORM/generated/prisma"
@@ -13,21 +8,31 @@ datasource db {
 }
 
 model Users {
-  id        String   @default(uuid())
-  name      String   @unique
+  id        String    @id @default(uuid())
+  name      String    @unique
   password  String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  admin     UserAdmin @default(NOT_ADMIN)
+  events    Events[]
 }
 
 model Events {
-  id               String        @default(uuid())
+  id               String        @id @default(uuid())
   name             String        @unique
   date             DateTime
   place            String
   availableSectors EventsSectors @default(ECONOMIC)
+  users            Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id          String
+}
+
+enum UserAdmin {
+  ADMIN
+  NOT_ADMIN
 }
 
 enum EventsSectors {
+  DYAMOND
   PREMIUM
   ECONOMIC
 }
