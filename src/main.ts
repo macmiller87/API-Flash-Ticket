@@ -13,7 +13,7 @@ async function bootstrap() {
   
   console.log(`Server is running at ${await app.getUrl()}`)
 
-  app.use((erro: Error, request: express.Request, response: express.Response, next: express.NextFunction) => {
+  app.use((erro: Error, request: express.Request, response: express.Response) => {
 
     if(erro instanceof AppError) {
         return response.status(erro.statusCode).json({ message: erro.message });

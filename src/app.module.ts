@@ -11,9 +11,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     // Distributed tracing, auto-correlated logs, request/job metrics, error
     // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
     ObserveModule.forRoot({
-      appKey: 'YOUR_APP_KEY',
-      appSecret: 'YOUR_APP_SECRET',
-      serviceId: 'api-flash-ticket',
+      appKey: String(process.env.APP_KEY),
+      appSecret: String(process.env.APP_SECRET),
+      serviceId: String(process.env.SERVICE_ID),
     }),
     DatabaseModule,
     
