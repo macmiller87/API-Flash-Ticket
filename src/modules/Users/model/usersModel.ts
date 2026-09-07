@@ -13,13 +13,30 @@ export class UsersModel implements IUsersModel {
             data: datas
         });
 
-        return {
-            id: createUser.id,
-            name: createUser.name,
-            password: createUser.password,
-            createdAt: createUser.createdAt,
-            admin: createUser.admin,
-        };
+        return createUser;
+    }
+
+    async setUserASAdmin(id: string): Promise<Users> {
+        const updateUserAdmin = await this.prismaService.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                admin: "ADMIN"
+            }
+        });
+
+        return updateUserAdmin;
+    }
+
+    async findUserById(id: string): Promise<Users | null> {
+        const find = await this.prismaService.users.findFirst({
+            where: {
+                id: id
+            }
+        });
+
+        return find;
     }
 
     async findUserByName(name: string): Promise<Users | null> {

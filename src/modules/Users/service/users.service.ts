@@ -1,5 +1,6 @@
 import { usersDataValidation } from "../../../utils/datasValidation/usersDataValidation.js";
 import { IUsersModel } from "../model/implementation-IUsersModel/iUsersModel.js";
+import { unhashPassword } from "../../../utils/jwt/jwtAuth.js";
 import { AppError } from "../../../utils/errors/appError.js";
 import { IUsersDTO, Users } from "../model/entity/users.js";
 import { Injectable } from "@nestjs/common";
@@ -10,12 +11,12 @@ export class UsersService {
 
     constructor(private usersModel: IUsersModel) {}
 
-    async create(request: IUsersDTO): Promise<Users> {
+    async createUser(request: IUsersDTO): Promise<Users> {
         const { name, password} = request;
 
         const checkUsersData = await usersDataValidation(name, password);
     
-        if(checkUsersData == true) {
+        if(checkUsersData === true) {
             const checkUsersByName = await this.usersModel.findUserByName(name);
 
             if(!checkUsersByName) {
@@ -33,6 +34,26 @@ export class UsersService {
         }
         
         throw new AppError("User already exist !", 404);
+    }
+
+    async loginUser(id: string, request: IUsersDTO): Promise<{ user: Users; token: string }> {
+        const { name, password } = request;
+
+        const checkUsersData = await usersDataValidation(name, password);
+        const findUserById = await this.usersModel.findUserById(id);
+
+        if(checkUsersData === true && findUserById) {
+            const generateToken = await unhashPassword(findUserById, password);
+            const setUserAdmin = await this.usersModel.setUserASAdmin(id);
+
+            return {
+                user: setUserAdmin,
+                token: generateToken,
+            }
+
+        }
+
+        throw new AppError("User Not found !", 404);
     }
     
 }
