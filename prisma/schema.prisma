@@ -19,7 +19,7 @@ model Users {
 model Events {
   id               String        @id @default(uuid())
   name             String        @unique
-  date             DateTime
+  date             String
   place            String
   availableSectors EventsSectors @default(ECONOMIC)
   users            Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)

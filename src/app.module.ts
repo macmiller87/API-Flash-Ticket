@@ -1,6 +1,9 @@
+import { EventsController } from './modules/Events/controller/events.controller.js';
 import { UsersController } from './modules/Users/controller/users.Controller.js';
+import { EventsService } from './modules/Events/service/events.service.js';
 import { UsersService } from './modules/Users/service/users.service.js';
 import { DatabaseModule } from './prismaORM/database.module.js';
+import { jwtAuthService } from './utils/jwt/jwtAuthService.js';
 import { createObserveModule } from '@nestjs/observe';
 import { Module } from '@nestjs/common';
 
@@ -18,10 +21,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     DatabaseModule,
     
   ],
-  controllers: [UsersController],
-  providers: [
-    UsersService
-  ]
+  controllers: [UsersController, EventsController],
+  providers: [UsersService, EventsService, jwtAuthService]
 })
 
 export class AppModule {}

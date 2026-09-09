@@ -1,15 +1,18 @@
 import { usersDataValidation } from "../../../utils/datasValidation/usersDataValidation.js";
 import { IUsersModel } from "../model/implementation-IUsersModel/iUsersModel.js";
-import { unhashPassword } from "../../../utils/jwt/jwtAuth.js";
 import { AppError } from "../../../utils/errors/appError.js";
 import { IUsersDTO, Users } from "../model/entity/users.js";
+import { jwtAuthService } from "../../../utils/jwt/jwtAuthService.js";
 import { Injectable } from "@nestjs/common";
 import { hash } from "bcrypt";
 
 @Injectable()
 export class UsersService {
 
-    constructor(private usersModel: IUsersModel) {}
+    constructor(
+        private readonly usersModel: IUsersModel,
+        private readonly jwtAuthService: jwtAuthService,
+    ) {}
 
     async createUser(request: IUsersDTO): Promise<Users> {
         const { name, password} = request;
@@ -33,7 +36,7 @@ export class UsersService {
 
         }
         
-        throw new AppError("User already exist !", 404);
+        throw new AppError("User already exist !", 401);
     }
 
     async loginUser(id: string, request: IUsersDTO): Promise<{ user: Users; token: string }> {
@@ -43,7 +46,7 @@ export class UsersService {
         const findUserById = await this.usersModel.findUserById(id);
 
         if(checkUsersData === true && findUserById) {
-            const generateToken = await unhashPassword(findUserById, password);
+            const generateToken = await this.jwtAuthService.unhashPassword(findUserById, password);
             const setUserAdmin = await this.usersModel.setUserASAdmin(id);
 
             return {

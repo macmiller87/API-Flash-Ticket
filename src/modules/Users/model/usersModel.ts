@@ -10,7 +10,10 @@ export class UsersModel implements IUsersModel {
 
     async create(datas: IUsersDTO): Promise<Users> {
         const createUser = await this.prismaService.users.create({
-            data: datas
+            data: datas,
+            include: {
+                events: true
+            }
         });
 
         return createUser;
