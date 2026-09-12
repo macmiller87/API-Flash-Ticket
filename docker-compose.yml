@@ -18,6 +18,23 @@ services:
     networks:
       - prisma-network
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: [
+      "redis-server",
+      "--user", "${REDIS_USER_DOCKER}", "on", ">${REDIS_PASSWORD_DOCKER}", "~*", "+@all",
+      "--user", "default", "off"
+    ]
+    depends_on:
+      postgres:
+        condition: service_healthy                 
+    networks:
+      - prisma-network
+
   app:
     build:
       dockerfile: Dockerfile       
