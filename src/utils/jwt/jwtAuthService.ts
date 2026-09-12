@@ -8,7 +8,7 @@ const { sign, verify } = pkg;
 @Injectable()
 export class jwtAuthService {
 
-    async unhashPassword(user: { id: string; name: string; password: string }, password: string): Promise<string> {
+    async sign(user: { id: string; name: string; password: string }, password: string): Promise<string> {
 
         const checkPassword = await compare(password, user.password);
 
@@ -33,7 +33,7 @@ export class jwtAuthService {
         throw new AppError("Password Incorrect !", 401);
     }
 
-    async verifyAsync(token: string): Promise<boolean | undefined> {
+    async verify(token: string): Promise<boolean | undefined> {
 
         try {
             const secret = String(process.env.SECRET);

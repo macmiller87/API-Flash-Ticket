@@ -17,6 +17,7 @@ export class EventsModel implements IEventsModel {
                 date: request.date,
                 place: request.place,
                 availableSectors: request.availableSectors === "ECONOMIC" ? EventsSectors.ECONOMIC : request.availableSectors as any,
+                quantity: request.quantity,
                 user_id: user_id
             }
 
@@ -25,14 +26,25 @@ export class EventsModel implements IEventsModel {
         return create;
     }
 
-    async findEventsByName(name: string): Promise<Events | null> {
-        const find = await this.prismaSeervice.events.findUnique({
+    async findEventsById(event_id: string): Promise<Events> {
+        const find = await this.prismaSeervice.events.findFirst({
             where: {
-                name: name
+                id: event_id
             }
         });
 
-        return find as Events | null;
+        return {
+            id: find?.id,
+            name: find?.name,
+            date: find?.date,
+            place: find?.place,
+            availableSectors: find?.availableSectors,
+            quantity: Number(find?.quantity),
+            createdAt: find?.createdAt,
+            user_id: find?.user_id
+            
+        } as Events
+
     }
 
 }

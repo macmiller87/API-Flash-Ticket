@@ -46,7 +46,7 @@ export class UsersService {
         const findUserById = await this.usersModel.findUserById(id);
 
         if(checkUsersData === true && findUserById) {
-            const generateToken = await this.jwtAuthService.unhashPassword(findUserById, password);
+            const generateToken = await this.jwtAuthService.sign(findUserById, password);
             const setUserAdmin = await this.usersModel.setUserASAdmin(id);
 
             return {

@@ -4,6 +4,7 @@ export interface IEventsDTO {
     date: string
     place: string;
     availableSectors?: string;
+    quantity: number;
     createdAt?: Date;
 }
 
@@ -47,6 +48,14 @@ export class Events {
 
     public get availableSectors(): string {
         return this.availableSectors;
+    }
+
+    public set quantity(quantity: number) {
+        this.quantity = quantity;
+    }
+
+    public get quantity(): number {
+        return this.quantity;
     }
 
     public set createdAt(createdAt: Date) {

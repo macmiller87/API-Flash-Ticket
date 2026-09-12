@@ -11,5 +11,9 @@ export async function eventsDataValidation(datas: IEventsDTO) {
         throw new AppError("All datas must be 'string", 401);
     }
 
+    if(typeof(datas.quantity) != "number") {
+        throw new AppError("Quantity field must be a 'int number'", 401);
+    }
+
     return true;
 }
