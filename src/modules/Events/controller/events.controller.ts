@@ -1,11 +1,9 @@
-import { Body, Controller, Get, Post, Query, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../../../utils/authGuard/auth.guard.js";
 import { EventsService } from "../service/events.service.js";
-import { CacheInterceptor } from "@nestjs/cache-manager";
 import { Events } from "../model/entity/events.js";
 
 @Controller("api/events")
-@UseInterceptors(CacheInterceptor)
 export class EventsController {
 
     constructor(private readonly eventsService: EventsService) {}

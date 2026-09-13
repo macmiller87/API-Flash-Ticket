@@ -26,25 +26,4 @@ export class EventsModel implements IEventsModel {
         return create;
     }
 
-    async findEventsById(event_id: string): Promise<Events> {
-        const find = await this.prismaSeervice.events.findFirst({
-            where: {
-                id: event_id
-            }
-        });
-
-        return {
-            id: find?.id,
-            name: find?.name,
-            date: find?.date,
-            place: find?.place,
-            availableSectors: find?.availableSectors,
-            quantity: Number(find?.quantity),
-            createdAt: find?.createdAt,
-            user_id: find?.user_id
-            
-        } as Events
-
-    }
-
 }

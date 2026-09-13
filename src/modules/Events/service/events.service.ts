@@ -1,11 +1,11 @@
 import { eventsDataValidation } from "../../../utils/datasValidation/eventsDataValidation.js";
 import { IUsersModel } from "../../Users/model/implementation-IUsersModel/iUsersModel.js";
 import { IEventsModel } from "../model/implementation-IEventsModel/iEventsModel.js";
+import { REDIS_CLIENT } from "../../../utils/redis/redisCacheDatabaseService.js";
 import { Events, IEventsDTO } from "../model/entity/events.js";
 import { AppError } from "../../../utils/errors/appError.js";
-import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable } from "@nestjs/common";
-
+import { Redis as RedisClient } from "ioredis";
 
 @Injectable()
 export class EventsService {
@@ -13,7 +13,7 @@ export class EventsService {
     constructor(
         private readonly eventsModel: IEventsModel,
         private readonly usersModel: IUsersModel,
-        @Inject(CACHE_MANAGER) private cacheManager: Cache
+        @Inject(REDIS_CLIENT) private readonly redisCacheDatabaseService: RedisClient,
     ) {}
 
     async create(request: IEventsDTO, user_id: string): Promise<Events> {
@@ -30,25 +30,19 @@ export class EventsService {
         }
 
         const create = await this.eventsModel.create(request, user_id);
-        await this.cacheManager.set(create.id, create);
+        await this.redisCacheDatabaseService.set(create.id, JSON.stringify(create));
         return create;
     }
 
     async getEvent(event_id: string): Promise<Events> {
 
-        const findEventByKeyOnRedis = await this.cacheManager.get(event_id);
+        const findEventByKeyOnRedis = await this.redisCacheDatabaseService.get(event_id);
 
-        if(!findEventByKeyOnRedis && findEventByKeyOnRedis === undefined) {
-            const findEventById = await this.eventsModel.findEventsById(event_id);   
-
-            if(!findEventById) {
-                throw new AppError("Event Not Found !", 404);
-            }
-
-            return findEventById;
+        if(findEventByKeyOnRedis === null) {
+            throw new AppError("Event Not Found !", 404);
         }
 
-        return findEventByKeyOnRedis as Events;
+        return JSON.parse(findEventByKeyOnRedis) as Events;
     }    
 
 }
