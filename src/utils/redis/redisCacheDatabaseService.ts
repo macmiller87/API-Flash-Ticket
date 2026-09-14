@@ -1,4 +1,4 @@
-import { Redis as RedisClient } from "ioredis";
+import { Redis as RedisClient } from 'ioredis';
 import { Module } from '@nestjs/common';
 
 export const REDIS_CLIENT = 'REDIS_CLIENT';
@@ -7,9 +7,17 @@ export const REDIS_CLIENT = 'REDIS_CLIENT';
   providers: [
     {
       provide: REDIS_CLIENT,
-      useFactory: () => {
-        const redisUrl = process.env.REDIS_URL;
-        return new RedisClient(String(redisUrl));
+      useFactory: async () => {
+
+        try {
+          return new RedisClient(String(process.env.REDIS_URL))
+        }catch(error: unknown) {
+          
+          if(error instanceof Error) {
+            throw new Error(error.message);
+          }
+
+        }
       },
     },
   ],

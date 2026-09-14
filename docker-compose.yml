@@ -41,7 +41,10 @@ services:
     container_name: server      
     restart: always
     ports:
-      - "8080:8080"    
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL_DOCKER} 
+      - REDIS_URL=${REDIS_URL_DOCKER} 
     depends_on:
       postgres:
         condition: service_healthy                 
