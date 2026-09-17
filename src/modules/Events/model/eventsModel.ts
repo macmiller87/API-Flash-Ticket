@@ -7,11 +7,11 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class EventsModel implements IEventsModel {
 
-    constructor(private readonly prismaSeervice: PrismaService) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
     async create(request: IEventsDTO, user_id: string): Promise<Events | any> {
 
-        const create = await this.prismaSeervice.events.create({
+        const create = await this.prismaService.events.create({
             data: {
                 name: request.name,
                 date: request.date,
@@ -24,6 +24,29 @@ export class EventsModel implements IEventsModel {
         });
 
         return create;
+    }
+
+    async updateEventQuantityById(event_id: string): Promise<Events | null> {
+        const update = await this.prismaService.events.update({
+            where: {
+                id: event_id
+            },
+            data: {
+                quantity: {
+                    decrement: 1
+                }
+            }
+        });
+
+        return update;
+    }
+
+    async delete(event_id: string): Promise<void> {
+        await this.prismaService.events.delete({
+            where: {
+                id: event_id
+            }
+        });
     }
 
 }
