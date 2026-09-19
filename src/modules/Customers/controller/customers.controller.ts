@@ -11,7 +11,7 @@ export class CustomersController {
         return await this.customersService.createEventsReserve(user_id, event_id);
     }
 
-    @Delete("deleteReserve")
+    @Delete("deleteReserve/:user_id/:event_id")
     async deleteReserve(@Query("user_id") user_id: string, @Query("event_id") event_id: string) {
         return await this.customersService.deleteEventReserve(user_id, event_id);
     }

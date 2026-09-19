@@ -48,7 +48,7 @@ export class CustomersService {
         const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
 
         if(curentEventStoredKey >= 0) {
-            await this.eventsService.updateEventQuantityById(event_id);
+            await this.eventsService.decreEventQuantityById(event_id);
 
             const checkReserveEventStoredKey = await this.customersModel.getReserveEventStoredKey(user_id, event_id);
 
@@ -108,8 +108,12 @@ export class CustomersService {
                 throw new AppError("Event Not Found !", 404);
             }
 
-            const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
+            await this.eventsService.increEventQuantityById(event_id);
 
+            const redisKeyEvent = `Event:${event_id}`;
+            await this.customersModel.increEventStoredKey(redisKeyEvent);
+
+            const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
             await this.customersModel.deleteEventReserve(redisKeyReserve);
 
             return {

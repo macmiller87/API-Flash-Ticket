@@ -26,7 +26,22 @@ export class EventsModel implements IEventsModel {
         return create;
     }
 
-    async updateEventQuantityById(event_id: string): Promise<Events | null> {
+    async increEventQuantityById(event_id: string): Promise<Events | null> {
+        const update = await this.prismaService.events.update({
+            where: {
+                id: event_id
+            },
+            data: {
+                quantity: {
+                    increment: 1
+                }
+            }
+        });
+
+        return update;
+    }
+
+    async decreEventQuantityById(event_id: string): Promise<Events | null> {
         const update = await this.prismaService.events.update({
             where: {
                 id: event_id

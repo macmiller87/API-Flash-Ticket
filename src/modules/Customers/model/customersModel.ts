@@ -30,6 +30,11 @@ export class CustomersModel implements ICustomersModel {
         return curentEventStock;
     }
 
+    async increEventStoredKey(redisKeyEvent: string): Promise<number> {
+        const curentEventStock = await this.redisCacheDatabaseService.hincrby(redisKeyEvent, "quantity", +1);
+        return curentEventStock;
+    }
+
     async deleteEventStoredKey(redisKeyEvent: string): Promise<void> {
         await this.redisCacheDatabaseService.del(redisKeyEvent);
     }
