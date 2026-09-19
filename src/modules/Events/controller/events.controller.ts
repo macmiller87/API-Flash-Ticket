@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../../../utils/authGuard/auth.guard.js";
 import { EventsService } from "../service/events.service.js";
 import { Events } from "../model/entity/events.js";
@@ -32,6 +32,12 @@ export class EventsController {
     @Get(":event_id")
     async getEvent(@Query("event_id") event_id: string) {
         return await this.eventsService.getEvent(event_id);
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete("deleteEvent/:event_id")
+    async deleteEvent(@Query("event_id") event_id: string) {
+        return await this.eventsService.deleteEvent(event_id);
     }
 
 }

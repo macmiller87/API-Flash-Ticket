@@ -54,7 +54,7 @@ export class CustomersModel implements ICustomersModel {
     async getReserveEventStoredKey(user_id: string, event_id: string): Promise<string | null> {
         const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
 
-        const find = this.redisCacheDatabaseService.get(redisKeyReserve);
+        const find = await this.redisCacheDatabaseService.get(redisKeyReserve);
         return find;
     }
 

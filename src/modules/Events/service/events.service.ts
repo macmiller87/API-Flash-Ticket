@@ -55,6 +55,22 @@ export class EventsService {
         }
 
         return JSON.parse(findEventByKeyOnRedis) as Events;
-    }    
+    } 
+    
+    async deleteEvent(event_id: string): Promise<object> {
+        const redisKeyEvent = `Event:${event_id}`;
+        const findEventByKeyOnRedis = await this.redisCacheDatabaseService.hgetall(redisKeyEvent);
+
+        if(findEventByKeyOnRedis === null) {
+            throw new AppError("Event Not found !", 404);
+        }
+
+        await this.redisCacheDatabaseService.del(redisKeyEvent);
+
+        return {
+            message: "Event Deleted with sucess !"
+        }
+
+    }
 
 }
