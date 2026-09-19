@@ -1,11 +1,13 @@
 import { IReserveEventStoredKeyDTO } from "../entity/reserveEventStoredKey.js";
 
 export abstract class ICustomersModel {
-    abstract createEventStoredReserve(reserveEventKey: string, expiresIn: number, quantity: string): Promise<string>;
-    abstract updateEventStoredReserve(reserveEventKey: string, quantity: string): Promise<string>;
-    abstract decreEventStoredKey(events_id: string): Promise<number>;
-    abstract deleteEventStoredKey(events_id: string): Promise<void>;
+    abstract createEventStoredReserve(redisKeyReserve: string, data: IReserveEventStoredKeyDTO, expiresIn: number): Promise<string>;
+    abstract updateEventStoredReserve(redisKeyReserve: string, quantity: number): Promise<string | null>;
+    abstract decreEventStoredKey(redisKeyEvent: string): Promise<number>;
+    abstract deleteEventStoredKey(redisKeyEvent: string): Promise<void>;
+    abstract deleteReserveEventStoredKey(events_id: string): Promise<void>;
     abstract deleteObjectEventStored(events_id: string): Promise<void>;
-    abstract getReserveEventStoredKey(data: IReserveEventStoredKeyDTO): Promise<string | null>;
+    abstract deleteEventReserve(redisKeyReserve: string): Promise<void>;
+    abstract getReserveEventStoredKey(user_id: string, event_id: string): Promise<string | null>;
     abstract findEventById(events_id: string): Promise<string | null>;
 }

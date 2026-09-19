@@ -31,14 +31,17 @@ export class EventsService {
         const create = await this.eventsModel.create(request, user_id);
         await this.redisCacheDatabaseService.set(create.id, JSON.stringify(create));
 
+        const redisKeyEvent = `Event:${create.id}`;
+
         const eventStoredKey = {
             event: create.id,
             name: create.name,
             date: create.date,
-            sector: create.availableSectors
+            sector: create.availableSectors,
+            quantity: create.quantity
         }
 
-        await this.redisCacheDatabaseService.set(JSON.stringify(eventStoredKey), create.quantity);
+        await this.redisCacheDatabaseService.hset(redisKeyEvent, eventStoredKey);
 
         return create;
     }

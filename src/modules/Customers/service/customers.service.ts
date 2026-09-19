@@ -29,57 +29,62 @@ export class CustomersService {
         const data = JSON.parse(findEventById);
         const name = data.name;
         const date = data.date;
+        const place = data.place;
         const availableSectors = data.availableSectors;
 
-        const eventStoredKey = {
-            event: event_id,
-            name: name,
-            date: date,
-            sector: availableSectors
-        }
+        const redisKeyEvent = `Event:${event_id}`;
+
+        const curentEventStoredKey = await this.customersModel.decreEventStoredKey(redisKeyEvent);
 
         const reserveEventStoredKey = {
-            user: user_id,
             event: event_id,
             name: name,
             date: date,
-            sector: availableSectors
+            place: place,
+            sector: availableSectors,
+            quantity: 1
         }
 
-        const curentEventStoredKey = await this.customersModel.decreEventStoredKey(JSON.stringify(eventStoredKey));
+        const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
 
         if(curentEventStoredKey >= 0) {
             await this.eventsService.updateEventQuantityById(event_id);
 
-            const checkReserveEventStoredKey = await this.customersModel.getReserveEventStoredKey(reserveEventStoredKey);
+            const checkReserveEventStoredKey = await this.customersModel.getReserveEventStoredKey(user_id, event_id);
 
             if(checkReserveEventStoredKey) {
                 let count = 1;
                 count++;
-                await this.customersModel.updateEventStoredReserve(JSON.stringify(reserveEventStoredKey), String(count));
+                await this.customersModel.updateEventStoredReserve(redisKeyReserve, count);
                 
                 return {
                     message: "Event reserved with sucess !",
                     Reserve: {
-                        user: reserveEventStoredKey.user,
+                        user: user_id,
                         event: reserveEventStoredKey.event,
                         name: reserveEventStoredKey.name,
                         date: reserveEventStoredKey.date,
+                        place: reserveEventStoredKey.place,
+                        sector: reserveEventStoredKey.sector,
+                        quantity: count,
                         reserveExpiresIn: "4 minutes"
                     }
                 }
 
             }
 
-            await this.customersModel.createEventStoredReserve(JSON.stringify(reserveEventStoredKey), 240, '1');
+            await this.customersModel.createEventStoredReserve(redisKeyReserve, reserveEventStoredKey, 240);
 
             return {
                 message: "Event reserved with sucess !",
                 Reserve: {
-                    user: reserveEventStoredKey.user,
+                    user: user_id,
                     event: reserveEventStoredKey.event,
                     name: reserveEventStoredKey.name,
                     date: reserveEventStoredKey.date,
+                    place: reserveEventStoredKey.place,
+                    sector: reserveEventStoredKey.sector,
+                    quantity: 1,
                     reserveExpiresIn: "4 minutes"
                 }
             }
@@ -87,10 +92,33 @@ export class CustomersService {
 
         await this.eventsService.delete(event_id);
 
-        await this.customersModel.deleteEventStoredKey(JSON.stringify(eventStoredKey));
+        await this.customersModel.deleteEventStoredKey(redisKeyEvent);
         await this.customersModel.deleteObjectEventStored(event_id);
 
         throw new AppError("This event is sold out for this sector !", 400);
+    }
+
+    async deleteEventReserve(user_id: string, event_id: string): Promise<object> {
+        const findUserById = await this.usersService.findUserById(user_id);
+
+        if(findUserById) {
+            const findEventById = await this.customersModel.findEventById(event_id);
+
+            if(findEventById === null) {
+                throw new AppError("Event Not Found !", 404);
+            }
+
+            const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
+
+            await this.customersModel.deleteEventReserve(redisKeyReserve);
+
+            return {
+                message: "Event reserve deleted with sucess !"
+            }
+
+        }
+
+        throw new AppError("User Not found !", 404);
     }
 
 }
