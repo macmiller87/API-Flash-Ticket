@@ -5,65 +5,93 @@ export interface IEventsDTO {
     place: string;
     availableSectors?: string;
     quantity: number;
+    price: number;
     createdAt?: Date;
 }
 
-export class Events {
+export class Events implements IEventsDTO {
+    private _id?: string;
+    private _name: string;
+    private _date: string;
+    private _place: string;
+    private _availableSectors?: string;
+    private _quantity: number;
+    private _price: number;
+    private _createdAt?: Date;
 
-    public set id(id: string) {
-        this.id = id;
+    constructor(props: IEventsDTO) {
+        this._id = props.id;
+        this._name = props.name;
+        this._date = props.date;
+        this._place = props.place;
+        this._availableSectors = props.availableSectors;
+        this._quantity = props.quantity;
+        this._price = props.price;
+        this._createdAt = props.createdAt;
     }
 
-    public get id(): string {
-        return this.id;
+    public set id(id: string | undefined) {
+        this._id = id;
+    }
+
+    public get id(): string | undefined {
+        return this._id;
     }
 
     public set name(name: string) {
-        this.name = name;
+        this._name = name;
     }
 
     public get name(): string {
-        return this.name;
+        return this._name;
     }
 
     public set date(date: string) {
-        this.date = date;
+        this._date = date;
     }
 
     public get date(): string {
-        return this.date;
+        return this._date;
     }
 
     public set place(place: string) {
-        this.place = place;
+        this._place = place;
     }
 
     public get place(): string {
-        return this.place;
+        return this._place;
     }
     
-    public set availableSectors(availableSectors: string) {
-        this.availableSectors = availableSectors;
+    public set availableSectors(availableSectors:  string | undefined) {
+        this._availableSectors = availableSectors;
     }
 
-    public get availableSectors(): string {
-        return this.availableSectors;
+    public get availableSectors(): string | undefined {
+        return this._availableSectors;
     }
 
     public set quantity(quantity: number) {
-        this.quantity = quantity;
+        this._quantity = quantity;
     }
 
     public get quantity(): number {
-        return this.quantity;
+        return this._quantity;
     }
 
-    public set createdAt(createdAt: Date) {
-        this.createdAt = createdAt;
+    public set price(price: number) {
+        this._price = price;
     }
 
-    public get createdAt(): Date {
-        return this.createdAt;
+    public get price(): number {
+        return this._price;
+    }
+
+    public set createdAt(createdAt: Date | undefined) {
+        this._createdAt = createdAt;
+    }
+
+    public get createdAt(): Date | undefined{
+        return this._createdAt;
     }
 
 }

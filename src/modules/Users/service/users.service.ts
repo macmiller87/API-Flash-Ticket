@@ -1,3 +1,4 @@
+import { adminDataValidation } from "../../../utils/datasValidation/adminsDataValidation.js";
 import { usersDataValidation } from "../../../utils/datasValidation/usersDataValidation.js";
 import { IUsersModel } from "../model/implementation-IUsersModel/iUsersModel.js";
 import { AppError } from "../../../utils/errors/appError.js";
@@ -15,9 +16,9 @@ export class UsersService {
     ) {}
 
     async createUser(request: IUsersDTO): Promise<Users> {
-        const { name, password} = request;
+        const { name, password, wallet } = request;
 
-        const checkUsersData = await usersDataValidation(name, password);
+        const checkUsersData = await usersDataValidation(name, password, wallet?.balance);
     
         if(checkUsersData === true) {
             const checkUsersByName = await this.usersModel.findUserByName(name);
@@ -28,7 +29,10 @@ export class UsersService {
 
                 const create = await this.usersModel.create({
                     name: name,
-                    password: passwordHash
+                    password: passwordHash,
+                    wallet: {
+                        balance: Number(wallet?.balance)
+                    }
                 });
 
                 return create;
@@ -39,10 +43,10 @@ export class UsersService {
         throw new AppError("User already exist !", 401);
     }
 
-    async loginUser(id: string, request: IUsersDTO): Promise<{ user: Users; token: string }> {
+    async loginUser(id: string, request: Users): Promise<{ user: Users; token: string }> {
         const { name, password } = request;
 
-        const checkUsersData = await usersDataValidation(name, password);
+        const checkUsersData = await adminDataValidation(name, password);
         const findUserById = await this.usersModel.findUserById(id);
 
         if(checkUsersData === true && findUserById) {

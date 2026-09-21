@@ -13,7 +13,7 @@ export class EventsController {
     async create(@Query("user_id") user_id: string, @Body() body: Events) {
         const resp = await this.eventsService.create(body, user_id);
         
-        const { id, name, date, place, availableSectors, quantity, createdAt } = resp;
+        const { id, name, date, place, availableSectors, quantity, price, createdAt } = resp;
 
         return {
             id,
@@ -22,6 +22,7 @@ export class EventsController {
             place,
             availableSectors,
             quantity: Number(quantity),
+            price: Number(price),
             createdAt,
             user_id: user_id
         }

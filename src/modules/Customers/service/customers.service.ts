@@ -31,6 +31,7 @@ export class CustomersService {
         const date = data.date;
         const place = data.place;
         const availableSectors = data.availableSectors;
+        const price = data.price;
 
         const redisKeyEvent = `Event:${event_id}`;
 
@@ -42,7 +43,8 @@ export class CustomersService {
             date: date,
             place: place,
             sector: availableSectors,
-            quantity: 1
+            quantity: 1,
+            price: price
         }
 
         const redisKeyReserve = `Reserve:${event_id}:User:${user_id}`;
@@ -67,6 +69,7 @@ export class CustomersService {
                         place: reserveEventStoredKey.place,
                         sector: reserveEventStoredKey.sector,
                         quantity: count,
+                        price: reserveEventStoredKey.price,
                         reserveExpiresIn: "4 minutes"
                     }
                 }
@@ -85,6 +88,7 @@ export class CustomersService {
                     place: reserveEventStoredKey.place,
                     sector: reserveEventStoredKey.sector,
                     quantity: 1,
+                    price: reserveEventStoredKey.price,
                     reserveExpiresIn: "4 minutes"
                 }
             }

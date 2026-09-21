@@ -9,13 +9,14 @@ export class UsersController {
 
     @Post()
     async create(@Body() body: Users) {
-        const { id, name, createdAt, admin} = await this.usersService.createUser(body);
+        const { id, name, createdAt, admin, balance } = await this.usersService.createUser(body);
         
         return {
             id,
             name,
             createdAt,
-            admin
+            admin,
+            balance: balance
         }
     }
 

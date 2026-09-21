@@ -1,6 +1,6 @@
 import { AppError } from "../errors/appError.js";
 
-export async function usersDataValidation(name: string, password: string, balance?: number) {
+export async function adminDataValidation(name: string, password: string) {
 
     if(name === "" || password === "") {
         throw new AppError("All fields must be filled in.", 401);
@@ -8,10 +8,6 @@ export async function usersDataValidation(name: string, password: string, balanc
 
     if(typeof(name) != "string" || typeof(password) != "string") {
         throw new AppError("All datas must be 'strings'.", 401);
-    }
-
-    if(typeof(balance) != "number") {
-        throw new AppError("Balance field must be a 'number'.", 401);
     }
 
     return true;

@@ -1,3 +1,4 @@
+import { IUsersDTO } from "../../modules/Users/model/entity/users.js";
 import { AppError } from "../errors/appError.js";
 import { SignOptions } from "jsonwebtoken";
 import { Injectable } from "@nestjs/common";
@@ -8,7 +9,7 @@ const { sign, verify } = pkg;
 @Injectable()
 export class jwtAuthService {
 
-    async sign(user: { id: string; name: string; password: string }, password: string): Promise<string> {
+    async sign(user: IUsersDTO, password: string): Promise<string> {
 
         const checkPassword = await compare(password, user.password);
 
