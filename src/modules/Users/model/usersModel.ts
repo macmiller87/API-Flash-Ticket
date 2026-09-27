@@ -100,6 +100,48 @@ export class UsersModel implements IUsersModel {
 
     }
 
+    async updateUserBalance(user_id: string, balance: number): Promise<Users | null> {
+        const update = await this.prismaService.users.update({
+            where: {
+                id: user_id
+            },
+            data: {
+                wallet: {
+                    update: {
+                        where: {
+                            user_id: user_id
+                        },
+                        data: {
+                            balance: balance
+                        }
+                    }
+                }
+            },
+            include: {
+                wallet: true
+            }
+            
+        });
+
+        if(update) {
+
+            return new Users({
+                id: update.id,
+                name: update.name,
+                password: update.password,
+                createdAt: update.createdAt,
+                admin: update.admin,
+                wallet: {
+                    user_id: update.id,
+                    balance: Number(update.wallet?.balance)
+                }
+            });
+
+        }
+
+        return update;
+    }
+
     async findUserById(id: string): Promise<Users | null> {
         const find = await this.prismaService.users.findFirst({
             where: {

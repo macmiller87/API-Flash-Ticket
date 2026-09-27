@@ -5,4 +5,5 @@ export abstract class IUsersModel {
     abstract findUserByName(name: string): Promise<Users | null>;
     abstract findUserById(id: string): Promise<Users | null>;
     abstract setUserASAdmin(id: string): Promise<Users>;
+    abstract updateUserBalance(user_id: string, balance: number): Promise<Users | null>;
 }

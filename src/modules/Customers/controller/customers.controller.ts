@@ -16,4 +16,9 @@ export class CustomersController {
         return await this.customersService.deleteEventReserve(user_id, event_id);
     }
 
+    @Post("orderCheckoutEvent")
+    async orderCheckoutEvent(@Query("user_id") user_id: string, @Query("reserve_id") reserve_id: string) {
+        return await this.customersService.orderCheckoutEvent(user_id, reserve_id);
+    }
+
 }

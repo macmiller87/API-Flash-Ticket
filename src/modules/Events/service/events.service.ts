@@ -37,6 +37,7 @@ export class EventsService {
             event: create.id,
             name: create.name,
             date: create.date,
+            place: create.place,
             sector: create.availableSectors,
             quantity: create.quantity,
             price: create.price
