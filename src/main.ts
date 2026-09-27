@@ -1,3 +1,4 @@
+import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger'; 
 import { rabbitmqConfig } from './utils/rabbitmq/config/rabbitmqConfig.js';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { AppError } from './utils/errors/appError.js';
@@ -10,8 +11,29 @@ async function bootstrap() {
   });
 
   app.connectMicroservice(rabbitmqConfig);
-
   await app.startAllMicroservices();
+
+  const config = new DocumentBuilder()
+    .setTitle("API-Flash-Ticket")
+    .setDescription('This is an API for controlling, managing and selling different types of tickets.')
+    .setContact('Macmiller Duarte', '', 'macamagolf@gmail.com')
+    .setVersion('1.0')
+    .addTag("Users / Customers / Events")
+    .addBearerAuth()
+    .build();
+
+  const options: SwaggerDocumentOptions = {
+    operationIdFactory: (
+      controllerKey: string,
+      methodKey: string
+    ) => methodKey
+  };
+
+  const documentFactory = () => SwaggerModule.createDocument(app, config, options);
+  
+  SwaggerModule.setup("api-doc", app, documentFactory, {
+    jsonDocumentUrl: "swagger/json",
+  });
 
   const port = Number(process.env.PORT);
   await app.listen(port);
