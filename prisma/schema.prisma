@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Users {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  admin     UserAdmin @default(NOT_ADMIN)
-  wallet    Wallet?
-  events    Events[]
+  id              String            @id @default(uuid())
+  name            String            @unique
+  password        String
+  createdAt       DateTime          @default(now())
+  admin           UserAdmin         @default(NOT_ADMIN)
+  wallet          Wallet?
+  events          Events[]
+  eventsPurchased EventsPurchased[]
 }
 
 model Events {
@@ -28,6 +29,18 @@ model Events {
   createdAt        DateTime      @default(now())
   users            Users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id          String
+}
+
+model EventsPurchased {
+  id       String @id @default(uuid())
+  user     String
+  event    String
+  name     String
+  date     String
+  place    String
+  sector   String
+  quantity Int
+  users    Users  @relation(fields: [user], references: [id], onDelete: Cascade)
 }
 
 model Wallet {

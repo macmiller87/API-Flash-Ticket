@@ -35,6 +35,22 @@ services:
     networks:
       - prisma-network
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # API/Worker communication port (AMQP protocol)
+      - "15672:15672" # Web Panel port (User: user / Pass: pass)
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER_DOCKER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_USER_PASSWORD}
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy                 
+    networks:
+      - prisma-network
+
   app:
     build:
       dockerfile: Dockerfile       
@@ -45,6 +61,7 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL_DOCKER} 
       - REDIS_URL=${REDIS_URL_DOCKER} 
+      - RABBITMQ_URL=${RABBITMQ_URL_DOCKER}
     depends_on:
       postgres:
         condition: service_healthy                 

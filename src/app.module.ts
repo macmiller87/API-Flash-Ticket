@@ -4,6 +4,7 @@ import { CustomersService } from './modules/Customers/service/customers.service.
 import { UsersController } from './modules/Users/controller/users.Controller.js';
 import { EventsService } from './modules/Events/service/events.service.js';
 import { UsersService } from './modules/Users/service/users.service.js';
+import { RabbitmqModule } from './utils/rabbitmq/rabbitmq.module.js';
 import { DatabaseModule } from './prismaORM/database.module.js';
 import { jwtAuthService } from './utils/jwt/jwtAuthService.js';
 import { RedisModule } from './utils/redis/redis.module.js';
@@ -22,7 +23,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       serviceId: String(process.env.SERVICE_ID),
     }),
     DatabaseModule,
-    RedisModule
+    RedisModule,
+    RabbitmqModule
     
   ],
   controllers: [UsersController, EventsController, CustomersController],

@@ -1,3 +1,4 @@
+import { rabbitmqConfig } from './utils/rabbitmq/config/rabbitmqConfig.js';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { AppError } from './utils/errors/appError.js';
 import { NestFactory } from '@nestjs/core';
@@ -7,6 +8,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
+
+  app.connectMicroservice(rabbitmqConfig);
+
+  await app.startAllMicroservices();
 
   const port = Number(process.env.PORT);
   await app.listen(port);

@@ -702,6 +702,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/microservices@npm:^12.0.4":
+  version: 12.0.4
+  resolution: "@nestjs/microservices@npm:12.0.4"
+  dependencies:
+    iterare: "npm:1.2.1"
+    tslib: "npm:2.8.1"
+  peerDependencies:
+    "@grpc/grpc-js": "*"
+    "@nats-io/transport-node": "*"
+    "@nestjs/common": ^12.0.0
+    "@nestjs/core": ^12.0.0
+    "@nestjs/websockets": ^12.0.0
+    amqp-connection-manager: "*"
+    amqplib: "*"
+    cache-manager: "*"
+    ioredis: "*"
+    kafkajs: "*"
+    mqtt: "*"
+    reflect-metadata: ^0.1.12 || ^0.2.0
+    rxjs: ^7.1.0
+  peerDependenciesMeta:
+    "@grpc/grpc-js":
+      optional: true
+    "@nats-io/transport-node":
+      optional: true
+    "@nestjs/websockets":
+      optional: true
+    amqp-connection-manager:
+      optional: true
+    amqplib:
+      optional: true
+    cache-manager:
+      optional: true
+    ioredis:
+      optional: true
+    kafkajs:
+      optional: true
+    mqtt:
+      optional: true
+  checksum: 10c0/174e21e3f00765322aff303ab0aeb92448dd48fe1394a9d6280e25392e4a4c6f4aa4c82de54780ac58cf031f2da4583dcfadf588563efbe0008cc8419b73f493
+  languageName: node
+  linkType: hard
+
 "@nestjs/observe@npm:^0.1.8":
   version: 0.1.8
   resolution: "@nestjs/observe@npm:0.1.8"
@@ -1698,6 +1741,7 @@ __metadata:
     "@nestjs/common": "npm:^12.0.1"
     "@nestjs/core": "npm:^12.0.1"
     "@nestjs/mau": "npm:^0.2.6"
+    "@nestjs/microservices": "npm:^12.0.4"
     "@nestjs/observe": "npm:^0.1.8"
     "@nestjs/platform-express": "npm:^12.0.1"
     "@nestjs/schematics": "npm:^12.0.0"
@@ -1710,6 +1754,8 @@ __metadata:
     "@types/node": "npm:^24.0.0"
     "@types/pg": "npm:^8.23.1"
     "@types/supertest": "npm:^7.0.0"
+    amqp-connection-manager: "npm:^5.0.0"
+    amqplib: "npm:^2.0.1"
     bcrypt: "npm:^6.0.0"
     dotenv: "npm:^17.4.2"
     ioredis: "npm:^6.0.0"
@@ -1768,6 +1814,24 @@ __metadata:
     json-schema-traverse: "npm:^1.0.0"
     require-from-string: "npm:^2.0.2"
   checksum: 10c0/5df9a1c8f83863cde1bd3a9ddb426f599718f88e3dc9153616c79fb28e0be455335830d7f21d745576519f057b371352daa31047b6a33d7036fe08777d60cf2a
+  languageName: node
+  linkType: hard
+
+"amqp-connection-manager@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "amqp-connection-manager@npm:5.0.0"
+  dependencies:
+    promise-breaker: "npm:^6.0.0"
+  peerDependencies:
+    amqplib: "*"
+  checksum: 10c0/5dfbbe07c5f58dad96bbeb4a8cbf8d6736672d5e2d82630dee0fecd9d1e437fea8a07f893ed71b88ef1777f833d63d26dc4daf4ac4604367bcc6167fac971f77
+  languageName: node
+  linkType: hard
+
+"amqplib@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "amqplib@npm:2.0.1"
+  checksum: 10c0/4de6dd3ac92bf59c5d7f00c4948a44288fca1a0abeae8f038c037dfc94bc485fc8c16c6d43759b7e50319b43aa0aff18b8b7566b2b3fbf25b3bf7039b80b3537
   languageName: node
   linkType: hard
 
@@ -4131,6 +4195,13 @@ __metadata:
   version: 7.0.0
   resolution: "proc-log@npm:7.0.0"
   checksum: 10c0/b89c2d862604f35fec795477b0c7e376feab3ba0d4f4d291c4e959567442697cf451ac557d0623c1cc38af45a78128b983410f397a10c5d3a67f76c33de4754b
+  languageName: node
+  linkType: hard
+
+"promise-breaker@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "promise-breaker@npm:6.0.0"
+  checksum: 10c0/fcd00836dd96d34d3376964bc3a9482251248cef00f0dcf1f2485e7d9af44f9c48b0431cf4dc780fd5a7137b8e0861e3c6557667811522e93978f6bffab66cfe
   languageName: node
   linkType: hard
 
