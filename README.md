@@ -59,6 +59,6 @@
 
 ### 🚀 How to run the swagger Documentation of this application
 
-- With the application already up, go to your web brownser and type the follow url .... http://localhost:port/api-doc
+- With the application already up, go to your web brownser and type the follow url .... `http://localhost:port/api-doc`
 
-- Hint to see the json schemma of the swagger doc type http://localhost:port/swagger/json
+- Hint to see the json schemma of the swagger doc type `http://localhost:port/swagger/json`
