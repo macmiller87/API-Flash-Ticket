@@ -56,3 +56,9 @@
 ### 📚 About the architecture of the application.
 
 - This app was created as the same as `MVC` architecture, trying to keep the good organization and responsability of the layers, to make easy to give maintenance and to be able to implement new stuffs as well.
+
+### 🚀 How to run the swagger Documentation of this application
+
+- With the application already up, go to your web brownser and type the follow url .... http://localhost:port/api-doc
+
+- Hint to see the json schemma of the swagger doc type http://localhost:port/swagger/json
